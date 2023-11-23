@@ -10,7 +10,7 @@
 
 This project relies on meticulous analysis to validate key financial metrics, answer pertinent business questions, and enable informed decision-making.
  
-**1. Relational Database Design:**
+#### 1. Relational Database Design:
 
 Crafted a relational database, interconnecting tables to form the backbone of financial exploration.
 
