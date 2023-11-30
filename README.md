@@ -115,14 +115,120 @@ WHERE rank_lowest = 1 OR rank_highest = 1;
 |1006|1343.00|
 
 
-
    **4. What is the revenue status of clients based on their total revenue for the month of July?**
+   <details><summary>Click to expand an analysis </summary>
+
+   ##### SQL query:
+```sql
+WITH revenue_report AS (
+    SELECT c.company_name,
+        SUM(st.revenue) AS total_revenue,
+        EXTRACT(MONTH FROM st.date) AS month
+    FROM sales_transactions st
+    LEFT JOIN clients c ON st.client_id = c.client_id
+    WHERE EXTRACT(MONTH FROM st.date) = 7
+    GROUP BY c.company_name, EXTRACT(MONTH FROM st.date)
+    ORDER BY total_revenue DESC
+)
+SELECT 
+    *,
+    CASE 
+        WHEN total_revenue > 5000 THEN 'High revenue' 
+        ELSE 'Low revenue' 
+    END AS revenue_status
+FROM revenue_report;
+```
+
+##### Output:
+
+|company_name|total_revenue|month|revenue_status|
+|----------------|---------|-----|--------------|
+|Wave Strategies|9800.00|7|High revenue|
+|Echo Marketing|7200.00|7|High revenue|
+|Insight Craft|6700.00|7|High revenue|
+|...|...|...|...|
+
    
    **5. What is the monthly revenue and percentage of revenue for each project, broken down by month?**
+   <details><summary>Click to expand an analysis </summary>
+
+   ##### SQL query:
+```sql
+WITH monthly_rev AS (
+SELECT
+    p.project_id,
+    EXTRACT(MONTH FROM st.date) AS month,
+    SUM(st.revenue) AS monthly_revenue,
+    ROUND((SUM(st.revenue)*100) / SUM(SUM(st.revenue)) OVER (PARTITION BY project_id),2) AS perc
+FROM sales_transactions st
+LEFT JOIN projects p
+    ON st.client_id = p.client_id
+GROUP BY p.project_id, EXTRACT(MONTH FROM st.date)
+ORDER BY p.project_id, month
+)
+SELECT *
+FROM monthly_rev;
+```
+
+##### Output:
+
+|project_id|month|monthly_revenue|perc|
+|----------|-----|---------------|----|
+|1001|6|1500.00|18.29|
+|1001|7|6700.00|81.71|
+|1002|6|5300.00|84.13|
+|...|...|...|...|
+
    
-   **6. What is the daily difference in total revenue for each date in the sales transactions data?**
-   
-   **7. Financial summary for each client, including total expenses, total revenue, profit, and profit margin, with a breakdown by company.**
+   **6. Financial summary for each client, including total expenses, total revenue, profit, and profit margin, with a breakdown by company.**
+   <details><summary>Click to expand an analysis </summary>
+
+   ##### SQL query:
+```sql
+WITH client_summary AS (
+    SELECT c.client_id,
+        t.transaction_date, 
+        c.company_name,
+        SUM(t.transaction_amount) AS total_expenses,
+        SUM(st.revenue) AS total_revenue,
+        (SUM(st.revenue)) - (SUM(t.transaction_amount)) AS profit,
+        ROUND((SUM(st.revenue) - SUM(t.transaction_amount)) / SUM(st.revenue) * 100 ,2) AS profit_margin
+    FROM clients c
+    LEFT JOIN sales_transactions st ON c.client_id = st.client_id
+    LEFT JOIN projects p ON c.client_id = p.client_id
+    LEFT JOIN transactions t ON t.project_id = p.project_id
+    GROUP BY c.client_id, c.company_name, t.transaction_date
+) 
+SELECT cs.client_id,
+       cs.transaction_date,
+       cs.company_name,
+       cs.total_expenses,
+       cs.total_revenue,
+       cs.profit, 
+       cs.profit_margin
+FROM client_summary cs
+LEFT JOIN projects p ON p.client_id = cs.client_id
+LEFT JOIN transactions t ON t.project_id = p.project_id
+GROUP BY cs.client_id, cs.company_name, cs.transaction_date
+ORDER BY cs.client_id;
+```
+
+##### Output:
+
+|client_id|transaction_date|company_name|total_expenses|total_revenue|profit|profit_margin|
+|----------|---------------|------------|--------------|-------------|------|-------------|
+|1|2023-06-09|Wave Strategies|2070.00|18900.00|16830.00|89.05|
+|1|2023-06-15|Wave Strategies|2388.00|18900.00|16512.00|87.37|
+|1|2023-06-18|Wave Strategies|2016.00|18900.00|16884.00|89.33|
+|1|2023-06-30|Wave Strategies|3384.00|18900.00|15516.00|82.10|
+
+|1|2023-07-30|Wave Strategies|1602.00|18900.00|17298.00|91.52|
+|1|2023-06-01|Insight Craft|1192.00|8200.00|7008.00|85.46|
+|1|2023-06-05|Insight Craft|2384.00|16400.00|140160.00|85.46|
+|1|2023-06-08|Insight Craft|1512.00|8200.00|6688.00|81.56|
+|...|...|...|...|
+
+
 
 
 
