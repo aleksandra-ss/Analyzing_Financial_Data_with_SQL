@@ -2,9 +2,11 @@
 
 **Author:** Aleksandra Solak <br />
 **Email:**  aleksandrasolak@yahoo.com <br />
-**LinkedIn:** linkedin.com/in/aleksandra-solak <br />
+**LinkedIn:** www.linkedin.com/in/aleksandra-solak <br />
 
-This project relies on meticulous analysis to validate key financial metrics, answer pertinent business questions, and enable informed decision-making.
+### Project Overview
+
+This project is an in-depth investigation of financial data dynamics, combining data modeling, data cleaning, and exploratory data analysis (EDA). This analysis, viewed through the lens of EDA, reveals important aspects of financial activities, revealing stories embedded in trends and patterns.
 
 
 ### Structure of project
@@ -23,7 +25,6 @@ Achieved a comprehensive understanding of financial dynamics by performing detai
 
 
    **1. What are the total expenses and the status of transactions for each client on each transaction date?**
-   <details><summary>Click to expand an analysis </summary>
 
    ##### SQL query:
 ```sql
@@ -47,22 +48,17 @@ ORDER BY t.transaction_date;
 |2023-07-30|1|267.00|Pending|
 |...|...|...|...|
 
-   
-   
-**Analysis of total expenses and transaction statuses across clients and transaction dates offers valuable insights for decision-making:**
-- Client 5 consistently has high expenses, making it a key account for revenue generation. Further analysis can explore the nature of transactions with this client for strategic planning. <br />
-- The majority of transactions are approved, but there's a notable cluster of pending transactions on July 31st. Investigating the reasons behind this concentration could optimize the approval process and minimize delays.  <br />
-- Dates with unusually high or low total expenses must be identified. For example, on June 5th, the total expense was higher, indicating a peak in financial activity. Understanding what causes such peaks can help with resource allocation. <br />
 
-</details>
+- Client 5 consistently has high expenses, making it a key account for revenue generation. Further analysis can explore the nature of transactions with this client for strategic planning. <br />
+- The majority of transactions are approved, but there's a notable cluster of pending transactions on July 31st. Investigating the reasons behind this concentration could optimize the approval process and minimize delays. <br />
+
     
    **2. What is the total expense and running total of transaction amounts for each company within the date range of July 1, 2023, to July 31, 2023?**
-   <details><summary>Click to expand an analysis </summary>
 
    ##### SQL query:
 ```sql
 SELECT DISTINCT (t.transaction_date),
-	      c.company_name,
+       c.company_name,
        transaction_amount,
        SUM(t.transaction_amount) OVER(PARTITION BY company_name ORDER BY t.transaction_date ASC
        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS transaction_running_total
@@ -82,9 +78,10 @@ ORDER BY c.company_name ASC;
 |2023-07-02|Apex Ally Creative|336.00|1002.00|
 |...|...|...|...|
 
+-Companies such as 'Apex Ally Creative' and 'Brand Zoom' have consistent spending patterns in June and July, whereas others have irregular patterns. This knowledge can have an impact on resource allocation strategies.
+
     
    **3. Which project has the highest and lowest expenses?**
-      <details><summary>Click to expand an analysis </summary>
 
    ##### SQL query:
 ```sql
@@ -115,15 +112,15 @@ WHERE rank_lowest = 1 OR rank_highest = 1;
 |1006|1343.00|
 
 
+
    **4. What is the revenue status of clients based on their total revenue for the month of July?**
-   <details><summary>Click to expand an analysis </summary>
 
    ##### SQL query:
 ```sql
 WITH revenue_report AS (
     SELECT c.company_name,
-        SUM(st.revenue) AS total_revenue,
-        EXTRACT(MONTH FROM st.date) AS month
+           SUM(st.revenue) AS total_revenue,
+           EXTRACT(MONTH FROM st.date) AS month
     FROM sales_transactions st
     LEFT JOIN clients c ON st.client_id = c.client_id
     WHERE EXTRACT(MONTH FROM st.date) = 7
@@ -148,9 +145,11 @@ FROM revenue_report;
 |Insight Craft|6700.00|7|High revenue|
 |...|...|...|...|
 
-   
+- 'Wave Strategies', 'Echo Marketing', 'Insight Craft', 'Brand Zoom', 'Pulse Advertising', and 'Peak Dynamics' exhibit high revenue, ranging from '5400.00' to '9800.00'. Conversely, 'Nova Ad Agency', 'Blend Advertising', and 'Apex Ally Creative' fall into the low revenue range, with totals from '700.00' to '3800.00'. 
+
+
+  
    **5. What is the monthly revenue and percentage of revenue for each project, broken down by month?**
-   <details><summary>Click to expand an analysis </summary>
 
    ##### SQL query:
 ```sql
@@ -179,20 +178,20 @@ FROM monthly_rev;
 |1002|6|5300.00|84.13|
 |...|...|...|...|
 
+- Projects '1001', '1002', '1003', '1005', '1006', '1007', '1008', and '1009' experienced revenue shifts from June to July. '1004' and '1010' maintained consistent revenue throughout. Projects like '1006' and '1007' displayed significant revenue growth in July
    
    **6. Financial summary for each client, including total expenses, total revenue, profit, and profit margin, with a breakdown by company.**
-   <details><summary>Click to expand an analysis </summary>
 
    ##### SQL query:
 ```sql
 WITH client_summary AS (
     SELECT c.client_id,
-        t.transaction_date, 
-        c.company_name,
-        SUM(t.transaction_amount) AS total_expenses,
-        SUM(st.revenue) AS total_revenue,
-        (SUM(st.revenue)) - (SUM(t.transaction_amount)) AS profit,
-        ROUND((SUM(st.revenue) - SUM(t.transaction_amount)) / SUM(st.revenue) * 100 ,2) AS profit_margin
+           t.transaction_date, 
+           c.company_name,
+           SUM(t.transaction_amount) AS total_expenses,
+           SUM(st.revenue) AS total_revenue,
+           (SUM(st.revenue)) - (SUM(t.transaction_amount)) AS profit,
+           ROUND((SUM(st.revenue) - SUM(t.transaction_amount)) / SUM(st.revenue) * 100 ,2) AS profit_margin
     FROM clients c
     LEFT JOIN sales_transactions st ON c.client_id = st.client_id
     LEFT JOIN projects p ON c.client_id = p.client_id
@@ -227,6 +226,10 @@ ORDER BY cs.client_id;
 |2|2023-06-08|Insight Craft|1512.00|8200.00|6688.00|81.56|
 |...|...|...|...|
 
+##### This analysis offers a concise overview of the financial performance for each company across June and July:
+- Wave Strategies showcased continual revenue growth, maintaining high profit margins.
+- Other companies, such as Insight Craft and Nova Ad Agency, demonstrated stability, while Blend Advertising experienced fluctuations.
+- Brands like Brand Zoom consistently maintained a profit margin above 90%, reflecting robust financial performance.
 
 
 
