@@ -1,0 +1,59 @@
+-- Schema finance_management
+
+CREATE SCHEMA IF NOT EXISTS `finance_management` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `finance_management`;
+
+
+-- Table `finance_management`.`clients`
+
+CREATE TABLE IF NOT EXISTS `finance_management`.`clients` (
+  `client_id` INT NOT NULL AUTO_INCREMENT,
+  `company_name` VARCHAR(45),
+  PRIMARY KEY (`client_id`));
+
+
+-- Table `finance_management`.`employees`
+
+CREATE TABLE IF NOT EXISTS `finance_management`.`employees` (
+  `employee_id` INT NOT NULL,
+  `name` VARCHAR(45),
+  `surname` VARCHAR(45),
+  `department` VARCHAR(45),
+  PRIMARY KEY (`employee_id`));
+
+
+-- Table `finance_management`.`projects`
+
+CREATE TABLE IF NOT EXISTS `finance_management`.`projects` (
+  `project_id` INT NOT NULL AUTO_INCREMENT,
+  `client_id` INT,
+  PRIMARY KEY (`project_id`),
+  FOREIGN KEY (`client_id`) REFERENCES `finance_management`.`clients` (`client_id`) ON DELETE NO ACTION ON UPDATE NO ACTION);
+
+
+-- Table `finance_management`.`transactions`
+
+CREATE TABLE IF NOT EXISTS `finance_management`.`transactions` (
+  `transaction_id` INT NOT NULL,
+  `project_id` INT NOT NULL,
+  `transaction_date` DATE,
+  `description` VARCHAR(45),
+  `transaction_amount` DECIMAL(10, 2),
+  `currency` VARCHAR(45),
+  `category` VARCHAR(45),
+  `employee_id` INT,
+  `status` VARCHAR(45),
+  PRIMARY KEY (`transaction_id`),
+  FOREIGN KEY (`employee_id`) REFERENCES `finance_management`.`employees` (`employee_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  FOREIGN KEY (`project_id`) REFERENCES `finance_management`.`projects` (`project_id`) ON DELETE NO ACTION ON UPDATE NO ACTION);
+
+
+-- Table `finance_management`.`sales_transactions`
+
+CREATE TABLE IF NOT EXISTS `finance_management`.`sales_transactions` (
+  `sales_transaction_id` INT NOT NULL AUTO_INCREMENT,
+  `date` DATE,
+  `revenue` DECIMAL(10,2),
+  `client_id` INT,
+  PRIMARY KEY (`sales_transaction_id`),
+  FOREIGN KEY (`client_id`) REFERENCES `finance_management`.`clients` (`client_id`) ON DELETE NO ACTION ON UPDATE NO ACTION);
