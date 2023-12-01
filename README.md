@@ -17,7 +17,7 @@ Crafted a relational database, interconnecting tables to form the backbone of fi
 [**2. Data Cleaning:**](data_cleaning.txt) <br />
 Implemented data cleaning procedures to ensure data integrity and set the stage for financial analysis. <br />
 
-[**3. Exploratory Data Analysis:**](Exploratory-Data-Analysis) <br />
+**3. Exploratory Data Analysis:** <br />
 Achieved a comprehensive understanding of financial dynamics by performing detailed financial analyses, answering critical business questions, and extracting actionable insights and providing recommendations.
 
 
