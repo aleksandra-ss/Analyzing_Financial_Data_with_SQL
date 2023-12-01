@@ -14,10 +14,10 @@ This project is an in-depth investigation of financial data dynamics, combining 
 [**1. Relational Database Design:**](create_tables.txt) <br />
 Crafted a relational database, interconnecting tables to form the backbone of financial exploration. <br />
 
-**2. Data Cleaning:** <br />
+[**2. Data Cleaning:**](data_cleaning.txt) <br />
 Implemented data cleaning procedures to ensure data integrity and set the stage for financial analysis. <br />
 
-**3. Exploratory Data Analysis:** <br />
+[**3. Exploratory Data Analysis:**](Exploratory-Data-Analysis) <br />
 Achieved a comprehensive understanding of financial dynamics by performing detailed financial analyses, answering critical business questions, and extracting actionable insights and providing recommendations.
 
 
