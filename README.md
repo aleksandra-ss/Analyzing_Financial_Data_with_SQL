@@ -11,7 +11,7 @@ This project is an in-depth investigation of financial data dynamics, combining 
 
 ### Structure of project
  
-**1. Relational Database Design:** <br />
+[**1. Relational Database Design:**](create_tables.txt) <br />
 Crafted a relational database, interconnecting tables to form the backbone of financial exploration. <br />
 
 **2. Data Cleaning:** <br />
