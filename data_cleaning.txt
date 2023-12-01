@@ -1,0 +1,63 @@
+-- Replace 'Surv.' with 'Survey' in the description column
+
+SELECT * 
+FROM transactions;
+
+SELECT description,
+REPLACE (description, 'Surv.', 'Survey') AS description
+FROM transactions;
+
+UPDATE transactions
+SET description = REPLACE (description, 'Surv.', 'Survey');
+
+
+-- Remove spaces in the strings in the category column
+
+SELECT category, TRIM(category)
+FROM transactions;
+
+UPDATE transactions
+SET category = TRIM(category);
+
+
+-- Check and handle NULL values in the category column
+
+SELECT *
+FROM transactions 
+WHERE category IS NULL;
+
+SELECT * 
+FROM transactions
+WHERE description = 'Google AdWords Campaign';
+
+SELECT description, category, COALESCE(category, 'Advertising')
+FROM transactions
+WHERE description = ('Google AdWords Campaign');
+
+UPDATE transactions
+SET category = COALESCE(category, 'Advertising')
+WHERE description = ('Google AdWords Campaign');
+
+SELECT * 
+FROM transactions
+WHERE description IN ('In-Store Display Design', 'Online Banner Ad Placement');
+
+UPDATE transactions
+SET category = COALESCE(category, 'Advertising')
+WHERE description IN ('In-Store Display Design', 'Online Banner Ad Placement');
+
+
+
+-- Modify employee names to have proper casing
+
+SELECT *
+FROM employees;
+
+SELECT name, CONCAT(UPPER(SUBSTRING(name, 1, 1)), LOWER(SUBSTRING(name,2))),
+       surname, CONCAT(UPPER(SUBSTRING(surname, 1,1)), LOWER(SUBSTRING(surname,2)))
+FROM employees;
+
+UPDATE employees
+SET 
+   name = CONCAT(UPPER(SUBSTRING(name, 1, 1)), LOWER(SUBSTRING(name,2))),
+   surname = CONCAT(UPPER(SUBSTRING(surname, 1,1)), LOWER(SUBSTRING(surname,2)));
