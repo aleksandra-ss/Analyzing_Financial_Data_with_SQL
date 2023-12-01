@@ -22,9 +22,15 @@ Achieved a comprehensive understanding of financial dynamics by performing detai
 
 
 ### Exploratory Data Analysis
+EDA entailed investigating financial data to answer key questions such as:
+- What are the total expenses and the status of transactions for each client on each transaction date?
+- What is the total expense and running total of transaction amounts for each company within the date range of July 1, 2023, to July 31, 2023?
+- Which project has the highest and lowest expenses?
+- What is the revenue status of clients based on their total revenue for the month of July?
+- What is the monthly revenue and percentage of revenue for each project, broken down by month?
+- Financial summary for each client, including total expenses, total revenue, profit, and profit margin, with a breakdown by company.
 
-
-   **1. What are the total expenses and the status of transactions for each client on each transaction date?**
+**1. What are the total expenses and the status of transactions for each client on each transaction date?**
 
    ##### SQL query:
 ```sql
@@ -53,7 +59,7 @@ ORDER BY t.transaction_date;
 - The majority of transactions are approved, but there's a notable cluster of pending transactions on July 31st. Investigating the reasons behind this concentration could optimize the approval process and minimize delays. <br />
 
     
-   **2. What is the total expense and running total of transaction amounts for each company within the date range of July 1, 2023, to July 31, 2023?**
+**2. What is the total expense and running total of transaction amounts for each company within the date range of July 1, 2023, to July 31, 2023?**
 
    ##### SQL query:
 ```sql
@@ -78,10 +84,10 @@ ORDER BY c.company_name ASC;
 |2023-07-02|Apex Ally Creative|336.00|1002.00|
 |...|...|...|...|
 
--Companies such as 'Apex Ally Creative' and 'Brand Zoom' have consistent spending patterns in June and July, whereas others have irregular patterns. This knowledge can have an impact on resource allocation strategies.
+- Companies such as 'Apex Ally Creative' and 'Brand Zoom' have consistent spending patterns in June and July, whereas others have irregular patterns. This knowledge can have an impact on resource allocation strategies.
 
     
-   **3. Which project has the highest and lowest expenses?**
+ **3. Which project has the highest and lowest expenses?**
 
    ##### SQL query:
 ```sql
@@ -113,7 +119,7 @@ WHERE rank_lowest = 1 OR rank_highest = 1;
 
 
 
-   **4. What is the revenue status of clients based on their total revenue for the month of July?**
+ **4. What is the revenue status of clients based on their total revenue for the month of July?**
 
    ##### SQL query:
 ```sql
@@ -149,7 +155,7 @@ FROM revenue_report;
 
 
   
-   **5. What is the monthly revenue and percentage of revenue for each project, broken down by month?**
+**5. What is the monthly revenue and percentage of revenue for each project, broken down by month?**
 
    ##### SQL query:
 ```sql
@@ -180,7 +186,7 @@ FROM monthly_rev;
 
 - Projects '1001', '1002', '1003', '1005', '1006', '1007', '1008', and '1009' experienced revenue shifts from June to July. '1004' and '1010' maintained consistent revenue throughout. Projects like '1006' and '1007' displayed significant revenue growth in July
    
-   **6. Financial summary for each client, including total expenses, total revenue, profit, and profit margin, with a breakdown by company.**
+**6. Financial summary for each client, including total expenses, total revenue, profit, and profit margin, with a breakdown by company.**
 
    ##### SQL query:
 ```sql
